@@ -1,3 +1,23 @@
+/*
+
+socket code from MaxLaumeister, donate to him - 14zoTKB29NdsJRvk4qP3vB9mQZ3dcV3eWk
+
+https://github.com/MaxLaumeister/Listen-To-Bitcoin/blob/master/socket.js
+
+LICENSE
+
+If you distribute this project in part or in full, please attribute with a link to the GitHub page. This software is available under The MIT License, reproduced below.
+
+Copyright (c) 2013 Maximillian Laumeister
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
 var satoshi = 100000000;
 
 var DELAY_CAP = 1000;

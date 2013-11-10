@@ -123,9 +123,9 @@ function aBuy(bitcoins, currency, currencyName) {
 
     var image = new Kinetic.Image({
         image: img,
-        x: cMap[currencyName][0],
-        y: cMap[currencyName][1],
         width: 30,
+        x: xPositions[currencyName]+10,
+        y: 380,
         height: 30,
     });
 
@@ -137,8 +137,8 @@ function aBuy(bitcoins, currency, currencyName) {
         node: image,
         duration: 6,
         rotation: Math.PI * 2,
-        x: xPositions[currencyName]+10,
-        y: 380,
+        x: cMap[currencyName][0],
+        y: cMap[currencyName][1],
         easing: Kinetic.Easings.EaseOut,
         onFinish: function () {
             layer.remove();

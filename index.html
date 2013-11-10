@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>fiatleak - watch the world's currencies flow into BTC in realtime</title>
+<link rel="stylesheet" type="text/css" href="screen.css" />
+</head>
+
+<body>
+
+<div id="content">
+
+<h3>fiatleak - watch the world's currencies flow into BTC in realtime</h3>
+
+<p>When one of the fiat currencies listed below is used to purchase BTC on the mt.gox market, a bitcoin is sent from the originating country to the currency counter in <span style="color: red;">red</span>.  The total BTC value is listed in <span style="color: green;">green</span>, this value is also tracked for each currency.</p>
+
+<p>Refreshing the site will cause all data to be reset to 0, allowing you to track differences in time between currencies.</p>
+
+<div id="mapcontainer"></div>
+
+<p id="footer">donate to author - 1DUtwZkDZTy4ZDNzE7mDZ4r9QRZc2D8kCC - <a href="https://github.com/andrewhodel/mindmap">https://github.com/andrewhodel/mindmap</a></p>
+
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
+<script src="js/worldMap.js"></script>
+<script src="js/mtgoxwebsocket.js"></script>
+<script src="js/reconnecting-websocket.min.js"></script>
+<script src="http://socketio.mtgox.com/socket.io/socket.io.js"></script>
+<script src="js/main.js"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40473878-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

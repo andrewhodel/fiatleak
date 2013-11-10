@@ -22,3 +22,8 @@ body {
 #footer {
 	color: #666;
 }
+
+#collecting {
+    float: right;
+	font-weight: bold;
+}

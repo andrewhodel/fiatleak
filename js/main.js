@@ -108,6 +108,10 @@ img.src = "img/btc_logo_30.png";
 
 function aBuy(bitcoins, currency, currencyName) {
 
+    if ($('#collecting').is(':visible')) {
+	$('#collecting').hide();
+    }
+
     var layer = new Kinetic.Layer();
 
     var circle = new Kinetic.Circle({
@@ -191,3 +195,9 @@ $('canvas').click(function (event) {
     //now you can use the x and y positions
     console.log("X: " + position.x + " Y: " + position.y);
 });
+
+animate();
+
+function animate() {
+    $("#collecting").animate({color:"red"}, 50000, animate);
+}

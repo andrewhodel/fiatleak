@@ -67,13 +67,14 @@ for (var key in cMap) {
         x: xPositions[key],
         y: 400,
         text: key,
+	fontStyle: 'bold',
         fontSize: 24,
         fill: 'red'
     });
 
     cValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: 420,
+        y: 425,
         text: '-0.00',
         fontSize: 12,
         fill: 'red'
@@ -195,9 +196,3 @@ $('canvas').click(function (event) {
     //now you can use the x and y positions
     console.log("X: " + position.x + " Y: " + position.y);
 });
-
-animate();
-
-function animate() {
-    $("#collecting").animate({color:"red"}, 50000, animate);
-}

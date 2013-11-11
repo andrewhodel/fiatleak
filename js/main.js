@@ -272,3 +272,8 @@ var hp = new Kinetic.Text({
 }
 
 window.setInterval("tickGraph()",1000);
+
+var socket = io.connect('http://fiatproxy1.jit.su:80');
+socket.on('proxyBuy', function (data) {
+	aBuy(data[0],data[1],data[2]);
+});

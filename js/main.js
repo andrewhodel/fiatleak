@@ -26,8 +26,8 @@ var stage = new Kinetic.Stage({
 });
 
 var mapLayer = new Kinetic.Layer({});
-
 var paisLayer = new Kinetic.Layer({});
+var graphLayer = new Kinetic.Layer({});
 
 var totalB = new Kinetic.Text({
   x: 350,
@@ -103,6 +103,7 @@ for (var key in cMap) {
 
 stage.add(mapLayer);
 stage.add(paisLayer);
+stage.add(graphLayer);
 
 var img = new Image();
 img.src = "img/btc_logo_30.png";
@@ -156,6 +157,7 @@ function aBuy(bitcoins, currency, currencyName) {
 		totalB.setText('+'+tbVal+' BTC');
 		tbValue = tbVal;
 
+		nowBtcTotal += Math.round(Number(bitcoins)*100)/100;
 
 		paisLayer.draw();
 
@@ -196,3 +198,77 @@ $('canvas').click(function (event) {
     //now you can use the x and y positions
     console.log("X: " + position.x + " Y: " + position.y);
 });
+
+var nowBtcTotal = 0;
+var largest = 2;
+
+function tickGraph() {
+
+	if (nowBtcTotal>largest) {
+		largest = nowBtcTotal;
+	}
+
+	//console.log(graphLayer.getChildren().length + ' graph points');
+
+	if (graphLayer.getChildren().length>0) {
+		// move graphLayer children left one px
+
+		for (var i=0; i<graphLayer.getChildren().length; i++) {
+
+			var x = graphLayer.getChildren()[i].getX()-4;
+			var y = graphLayer.getChildren()[i].getY();
+
+			if (x<0) {
+				// remove it
+				graphLayer.getChildren()[i].remove();
+			} else {
+				// add it
+				graphLayer.getChildren()[i].setPosition(x,y);
+			}
+
+		}
+
+	}
+
+	var calc = nowBtcTotal;
+	if (nowBtcTotal>largest) {
+		// set safe calc total
+		calc = largest;
+	}
+	var cx = 1000;
+	var cy = 379-((100/largest)*calc);
+
+	if (cy<328) {
+		console.log('add a high point number >50%');
+
+var hp = new Kinetic.Text({
+  x: cx-4,
+  y: cy-10,
+  text: '+'+nowBtcTotal+' BTC',
+  fontSize: 10,
+  fontStyle: 'bold',
+  fill: 'green'
+});
+
+		hp.rotateDeg(-90);
+
+		graphLayer.add(hp);
+
+	}
+
+    var circle = new Kinetic.Circle({
+        radius: 2,
+        fill: '#f7931a',
+	x: cx,
+	y: cy
+    });
+
+	graphLayer.add(circle);
+	graphLayer.draw();
+
+	//console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
+	nowBtcTotal = 0;
+
+}
+
+window.setInterval("tickGraph()",1000);

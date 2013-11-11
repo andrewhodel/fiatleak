@@ -1,8 +1,8 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	font-family: Verdana,Geneva,Kalimati,sans-serif;
-	font-size: 10px;
+	font-family: ‘Lucida Console’, Monaco, monospace;
+	font-size: 12px;
 }
 
 #content {
@@ -17,6 +17,9 @@ body {
 	height: 475px;
 	width: 1015px;
 	background-position: 1px 1px;
+}
+
+#mapcontainer {
 }
 
 #footer {

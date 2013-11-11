@@ -238,8 +238,8 @@ function tickGraph() {
 	var cx = 1000;
 	var cy = 379-((100/largest)*calc);
 
-	if (cy<328) {
-		console.log('add a high point number >50%');
+	if (cy<304) {
+		console.log('add a high point number >25%');
 
 var hp = new Kinetic.Text({
   x: cx-4,

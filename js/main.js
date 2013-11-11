@@ -17,12 +17,13 @@ var cMap = {
     'SGD': [741,230],
     'THB': [736,183],
     'NOK': [490,61],
+    'ILS': [490,61],
 }
 
 var stage = new Kinetic.Stage({
     container: 'mapcontainer',
     width: 1015,
-    height: 475,
+    height: 510,
 });
 
 var mapLayer = new Kinetic.Layer({});
@@ -61,11 +62,18 @@ var i = 0;
 for (var key in cMap) {
 
     var stageWidth = stage.attrs.width;
-    xPositions[key] = i * (stageWidth / Object.keys(cMap).length);
+    var ybase = 400;
+
+    if (i>15) {
+	ybase = 460;
+        xPositions[key] = (i-16) * (stageWidth / Object.keys(cMap).length);
+    } else {
+        xPositions[key] = i * (stageWidth / Object.keys(cMap).length);
+    }
 
     cLabels[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: 400,
+        y: ybase,
         text: key,
 	fontStyle: 'bold',
         fontSize: 24,
@@ -74,7 +82,7 @@ for (var key in cMap) {
 
     cValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: 425,
+        y: ybase+25,
         text: '-0.00',
         fontSize: 12,
         fill: 'red'
@@ -84,7 +92,7 @@ for (var key in cMap) {
 
     bValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: 440,
+        y: ybase+40,
         text: '+0.00',
         fontSize: 12,
         fill: 'green'
@@ -109,6 +117,10 @@ var img = new Image();
 img.src = "img/btc_logo_30.png";
 
 function aBuy(bitcoins, currency, currencyName) {
+
+	if (typeof cMap[currencyName] === 'undefined') {
+		return;
+	}
 
     if ($('#collecting').is(':visible')) {
 	$('#collecting').hide();
@@ -236,10 +248,10 @@ function tickGraph() {
 		calc = largest;
 	}
 	var cx = 1000;
-	var cy = 379-((100/largest)*calc);
+	var cy = 389-((100/largest)*calc);
 
-	if (cy<354) {
-		console.log('add a high point number >25%');
+	if (cy<379) {
+		console.log('add a high point number >10%');
 
 var hp = new Kinetic.Text({
   x: cx-4,

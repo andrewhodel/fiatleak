@@ -17,7 +17,7 @@ var cMap = {
     'SGD': [741,230],
     'THB': [736,183],
     'NOK': [490,61],
-    'ILS': [490,61],
+    'ILS': [562,142],
 }
 
 var stage = new Kinetic.Stage({

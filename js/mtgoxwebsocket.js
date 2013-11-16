@@ -20,8 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 var satoshi = 100000000;
 
-var DELAY_CAP = 1000;
-
 function TradeSocket() {
 
 }
@@ -37,13 +35,13 @@ TradeSocket.init = function() {
 
 		connection.onopen = function() {
 			console.log('Mt.Gox: Connection open!');
-			
+
 			var unsubDepth = {
 				"op" : "unsubscribe",
 				"channel" : "24e67e0d-1cad-4cc0-9e7a-f8523ef460fe"
 			}
-			
 			connection.send(JSON.stringify(unsubDepth));
+
 		}
 
 		connection.onclose = function() {
@@ -57,22 +55,19 @@ TradeSocket.init = function() {
 
 		connection.onmessage = function(e) {
 			var message = JSON.parse(e.data);
-			//console.log(message);
 			
 			if (message.trade) {
 
 				var bitcoins = message.trade.amount_int / satoshi;
-				var currency = (message.trade.price * message.trade.amount_int / satoshi);
+				var price = message.trade.price;
 				var currencyName = message.trade.price_currency;
 				
-				console.log("Trade: " + bitcoins + " BTC | " + currency  + " " + currencyName);
+				//console.log("Trade: " + bitcoins + " BTC | " + currency  + " " + currencyName);
 
-				aBuy(bitcoins, currency, currencyName);
+				aBuy(bitcoins, price, currencyName);
 
-				setTimeout(function() {
-					//new Transaction(bitcoins, false, currency, currencyName);
-				}, Math.random() * DELAY_CAP);
 			}
+
 		}
 	} else {
 		//WebSockets are not supported.

@@ -5,6 +5,11 @@ body {
 	font-size: 12px;
 }
 
+a:link, a:active, a:visited {
+	color: #aaa;
+	text-decoration: none;
+}
+
 #content {
 	display: block;
 	margin: 0 auto;
@@ -14,7 +19,7 @@ body {
 #container {
 	display: block;
 	overflow: hidden;
-	height: 510px;
+	height: 530px;
 	width: 1015px;
 	background-position: 1px 1px;
 }
@@ -28,6 +33,6 @@ body {
 }
 
 #collecting {
-    float: right;
+	float: right;
 	font-weight: bold;
 }

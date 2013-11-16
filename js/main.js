@@ -1,29 +1,29 @@
 TradeSocket.init();
 
 var cMap = {
-    'USD': [196,112],
-    'EUR': [493,89],
-    'JPY': [841,132],
-    'CAD': [257,82],
-    'GBP': [464,86],
-    'CHF': [488,102],
-    'RUB': [575,84],
-    'AUD': [783,291],
-    'SEK': [511,66],
-    'DKK': [491,78],
-    'HKD': [773,166],
-    'PLN': [513,83],
-    'CNY': [758,131],
-    'SGD': [741,230],
-    'THB': [736,183],
-    'NOK': [490,61],
-    'ILS': [562,142],
+    'USD': [196, 112],
+    'EUR': [493, 89],
+    'JPY': [841, 132],
+    'CAD': [257, 82],
+    'GBP': [464, 86],
+    'CHF': [488, 102],
+    'RUB': [575, 84],
+    'AUD': [783, 291],
+    'SEK': [511, 66],
+    'DKK': [491, 78],
+    'HKD': [773, 166],
+    'PLN': [513, 83],
+    'CNY': [758, 131],
+    'SGD': [741, 230],
+    'THB': [736, 183],
+    'NOK': [490, 61],
+    'ILS': [562, 142],
 }
 
 var stage = new Kinetic.Stage({
     container: 'mapcontainer',
     width: 1015,
-    height: 510,
+    height: 530,
 });
 
 var mapLayer = new Kinetic.Layer({});
@@ -31,11 +31,11 @@ var paisLayer = new Kinetic.Layer({});
 var graphLayer = new Kinetic.Layer({});
 
 var totalB = new Kinetic.Text({
-  x: 350,
-  y: 330,
-  text: '+0.00 BTC',
-  fontSize: 60,
-  fill: 'green'
+    x: 350,
+    y: 330,
+    text: '+0.00 BTC',
+    fontSize: 60,
+    fill: 'green'
 });
 
 for (var key in worldMap.shapes) {
@@ -55,6 +55,7 @@ var cValueBoxes = {};
 var cValues = {};
 var bValueBoxes = {};
 var bValues = {};
+var rateValueBoxes = {};
 var xPositions = {};
 var tbValue = 0;
 
@@ -64,9 +65,9 @@ for (var key in cMap) {
     var stageWidth = stage.attrs.width;
     var ybase = 400;
 
-    if (i>15) {
-	ybase = 460;
-        xPositions[key] = (i-16) * (stageWidth / Object.keys(cMap).length);
+    if (i > 15) {
+        ybase = 470;
+        xPositions[key] = (i - 16) * (stageWidth / Object.keys(cMap).length);
     } else {
         xPositions[key] = i * (stageWidth / Object.keys(cMap).length);
     }
@@ -75,15 +76,15 @@ for (var key in cMap) {
         x: xPositions[key],
         y: ybase,
         text: key,
-	fontStyle: 'bold',
+        fontStyle: 'bold',
         fontSize: 24,
         fill: 'red'
     });
 
     cValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase+25,
-        text: '-0.00',
+        y: ybase + 40,
+        text: '',
         fontSize: 12,
         fill: 'red'
     });
@@ -92,18 +93,27 @@ for (var key in cMap) {
 
     bValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase+40,
-        text: '+0.00',
+        y: ybase + 25,
+        text: '+0',
         fontSize: 12,
         fill: 'green'
     });
 
     bValues[key] = 0;
 
+    rateValueBoxes[key] = new Kinetic.Text({
+        x: xPositions[key],
+        y: ybase + 55,
+        text: '',
+        fontSize: 12,
+        fill: 'purple'
+    });
+
     paisLayer.add(cLabels[key]);
     paisLayer.add(totalB);
     paisLayer.add(cValueBoxes[key]);
     paisLayer.add(bValueBoxes[key]);
+    paisLayer.add(rateValueBoxes[key]);
 
     i++;
 
@@ -116,14 +126,16 @@ stage.add(graphLayer);
 var img = new Image();
 img.src = "img/btc_logo_30.png";
 
-function aBuy(bitcoins, currency, currencyName) {
+function aBuy(bitcoins, price, currencyName) {
 
-	if (typeof cMap[currencyName] === 'undefined') {
-		return;
-	}
+	//console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
+
+    if (typeof cMap[currencyName] === 'undefined') {
+        return;
+    }
 
     if ($('#collecting').is(':visible')) {
-	$('#collecting').hide();
+        $('#collecting').hide();
     }
 
     var layer = new Kinetic.Layer();
@@ -138,7 +150,7 @@ function aBuy(bitcoins, currency, currencyName) {
     var image = new Kinetic.Image({
         image: img,
         width: 30,
-        x: xPositions[currencyName]+10,
+        x: xPositions[currencyName] + 10,
         y: 380,
         height: 30,
     });
@@ -157,21 +169,23 @@ function aBuy(bitcoins, currency, currencyName) {
         onFinish: function () {
             layer.destroy();
 
-		var cVal = Math.round((Number(currency)+cValues[currencyName])*100)/100;
-		cValueBoxes[currencyName].setText('-'+cVal);
-		cValues[currencyName] = cVal;
+            var cVal = Math.round((Number(bitcoins*price) + cValues[currencyName]));
+            cValueBoxes[currencyName].setText('$' + cVal);
+            cValues[currencyName] = cVal;
 
-		var bVal = Math.round((Number(bitcoins)+bValues[currencyName])*100)/100;
-		bValueBoxes[currencyName].setText('+'+bVal);
-		bValues[currencyName] = bVal;
+            var bVal = Math.round(Number(bitcoins) + bValues[currencyName]);
+            bValueBoxes[currencyName].setText('+' + bVal);
+            bValues[currencyName] = bVal;
 
-		var tbVal = Math.round((Number(bitcoins)+tbValue)*100)/100;
-		totalB.setText('+'+tbVal+' BTC');
-		tbValue = tbVal;
+            rateValueBoxes[currencyName].setText('@' + Math.round(Number(price)*100)/100);
 
-		nowBtcTotal += Number(bitcoins);
+            var tbVal = Math.round((Number(bitcoins) + tbValue) * 100) / 100;
+            totalB.setText('+' + tbVal + ' BTC');
+            tbValue = tbVal;
 
-		paisLayer.draw();
+            nowBtcTotal += Number(bitcoins);
+
+            paisLayer.draw();
 
         }
     });
@@ -216,78 +230,78 @@ var largest = 2;
 
 function tickGraph() {
 
-	if (nowBtcTotal>largest) {
-		largest = nowBtcTotal;
-	}
+    if (nowBtcTotal > largest) {
+        largest = nowBtcTotal;
+    }
 
-	//console.log(graphLayer.getChildren().length + ' graph points');
+    //console.log(graphLayer.getChildren().length + ' graph points');
 
-	if (graphLayer.getChildren().length>0) {
-		// move graphLayer children left one px
+    if (graphLayer.getChildren().length > 0) {
+        // move graphLayer children left one px
 
-		for (var i=0; i<graphLayer.getChildren().length; i++) {
+        for (var i = 0; i < graphLayer.getChildren().length; i++) {
 
-			var x = graphLayer.getChildren()[i].getX()-4;
-			var y = graphLayer.getChildren()[i].getY();
+            var x = graphLayer.getChildren()[i].getX() - 4;
+            var y = graphLayer.getChildren()[i].getY();
 
-			if (x<0) {
-				// remove it
-				graphLayer.getChildren()[i].destroy();
-			} else {
-				// add it
-				graphLayer.getChildren()[i].setPosition(x,y);
-			}
+            if (x < 0) {
+                // remove it
+                graphLayer.getChildren()[i].destroy();
+            } else {
+                // add it
+                graphLayer.getChildren()[i].setPosition(x, y);
+            }
 
-		}
+        }
 
-	}
+    }
 
-	var calc = nowBtcTotal;
-	if (nowBtcTotal>largest) {
-		// set safe calc total
-		calc = largest;
-	}
-	var cx = 1000;
-	var cy = 389-((100/largest)*calc);
+    var calc = nowBtcTotal;
+    if (nowBtcTotal > largest) {
+        // set safe calc total
+        calc = largest;
+    }
+    var cx = 1000;
+    var cy = 389 - ((100 / largest) * calc);
 
-	if (cy<379) {
-		console.log('add a high point number >10%');
+    if (cy < 379) {
+        console.log('add a high point number >10%');
 
-		var pn = Math.round(nowBtcTotal*100)/100;
+        var pn = Math.round(nowBtcTotal * 100) / 100;
 
-var hp = new Kinetic.Text({
-  x: cx-4,
-  y: cy-10,
-  text: '+'+pn+' BTC',
-  fontSize: 10,
-  fontStyle: 'bold',
-  fill: 'green'
-});
+        var hp = new Kinetic.Text({
+            x: cx - 4,
+            y: cy - 10,
+            text: '+' + pn + ' BTC',
+            fontSize: 10,
+            fontStyle: 'bold',
+            fill: 'green'
+        });
 
-		hp.rotateDeg(-90);
+        hp.rotateDeg(-90);
 
-		graphLayer.add(hp);
+        graphLayer.add(hp);
 
-	}
+    }
 
     var circle = new Kinetic.Circle({
         radius: 2,
         fill: '#f7931a',
-	x: cx,
-	y: cy
+        x: cx,
+        y: cy
     });
 
-	graphLayer.add(circle);
-	graphLayer.draw();
+    graphLayer.add(circle);
+    graphLayer.draw();
 
-	//console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
-	nowBtcTotal = 0;
+    //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
+    nowBtcTotal = 0;
 
 }
 
-window.setInterval("tickGraph()",1000);
+window.setInterval("tickGraph()", 1000);
 
 var socket = io.connect('http://fiatproxy1.jit.su:80');
 socket.on('proxyBuy', function (data) {
-	aBuy(data[0],data[1],data[2]);
+    aBuy(data[0], data[1], data[2]);
 });

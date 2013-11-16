@@ -169,7 +169,7 @@ function aBuy(bitcoins, currency, currencyName) {
 		totalB.setText('+'+tbVal+' BTC');
 		tbValue = tbVal;
 
-		nowBtcTotal += Math.round(Number(bitcoins)*100)/100;
+		nowBtcTotal += Number(bitcoins);
 
 		paisLayer.draw();
 
@@ -253,10 +253,12 @@ function tickGraph() {
 	if (cy<379) {
 		console.log('add a high point number >10%');
 
+		var pn = Math.round(nowBtcTotal*100)/100;
+
 var hp = new Kinetic.Text({
   x: cx-4,
   y: cy-10,
-  text: '+'+nowBtcTotal+' BTC',
+  text: '+'+pn+' BTC',
   fontSize: 10,
   fontStyle: 'bold',
   fill: 'green'

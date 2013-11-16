@@ -155,7 +155,7 @@ function aBuy(bitcoins, currency, currencyName) {
         y: cMap[currencyName][1],
         easing: Kinetic.Easings.EaseOut,
         onFinish: function () {
-            layer.remove();
+            layer.destroy();
 
 		var cVal = Math.round((Number(currency)+cValues[currencyName])*100)/100;
 		cValueBoxes[currencyName].setText('-'+cVal);
@@ -232,7 +232,7 @@ function tickGraph() {
 
 			if (x<0) {
 				// remove it
-				graphLayer.getChildren()[i].remove();
+				graphLayer.getChildren()[i].destroy();
 			} else {
 				// add it
 				graphLayer.getChildren()[i].setPosition(x,y);

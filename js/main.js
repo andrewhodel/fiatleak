@@ -169,18 +169,18 @@ function aBuy(bitcoins, price, currencyName) {
         onFinish: function () {
             layer.destroy();
 
-            var cVal = Math.round((Number(bitcoins*price) + cValues[currencyName]));
-            cValueBoxes[currencyName].setText('$' + cVal);
+            var cVal = Number(bitcoins*price)+cValues[currencyName];
+            cValueBoxes[currencyName].setText('$' + Math.round(cVal));
             cValues[currencyName] = cVal;
 
-            var bVal = Math.round(Number(bitcoins) + bValues[currencyName]);
-            bValueBoxes[currencyName].setText('+' + bVal);
+            var bVal = Number(bitcoins)+bValues[currencyName];
+            bValueBoxes[currencyName].setText('+' + Math.round(bVal));
             bValues[currencyName] = bVal;
 
             rateValueBoxes[currencyName].setText('@' + Math.round(Number(price)*100)/100);
 
-            var tbVal = Math.round((Number(bitcoins) + tbValue) * 100) / 100;
-            totalB.setText('+' + tbVal + ' BTC');
+            var tbVal = Number(bitcoins) + tbValue;
+            totalB.setText('+' + Math.round(tbVal*100)/100 + ' BTC');
             tbValue = tbVal;
 
             nowBtcTotal += Number(bitcoins);

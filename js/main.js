@@ -170,7 +170,7 @@ function aBuy(bitcoins, price, currencyName) {
             layer.destroy();
 
             var cVal = Number(bitcoins*price)+cValues[currencyName];
-            cValueBoxes[currencyName].setText('$' + Math.round(cVal));
+            cValueBoxes[currencyName].setText(Math.round(cVal));
             cValues[currencyName] = cVal;
 
             var bVal = Number(bitcoins)+bValues[currencyName];

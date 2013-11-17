@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>fiatleak - watch the world's currencies flow into BTC in realtime</title>
+<link rel="stylesheet" type="text/css" href="screen.css" />
+</head>
+
+<body>
+
+<div id="content">
+
+<p id="collecting"><img src="img/spin.gif" /> - waiting for first trade...</p>
+<h2><a href="http://fiatleak.com" style="color: orange;">http://fiatleak.com</a> - watch the world's currencies flow into BTC in realtime</h2>
+
+<p>Data from <a href="https://www.mtgox.com/">MT.GOX</a>, <a href="https://www.bitstamp.net/">BITSTAMP</a>, <a href="https://vip.btcchina.com/">BTCChina</a>, <a href="https://btc-e.com/">BTC-E</a>, <a href="https://www.bit2c.co.il/">Bit2c</a></p>
+
+<p>Each trade results in a bitcoin being sent from the currency counter in <strong style="color: red;">red</strong> to the country on the map.  The value in BTC is listed in <strong style="color: green;">green</strong> and plotted across the map.  The last exchange rate for each currency is listed in <strong style="color: purple;">@purple</strong> and updated for each trade.</p>
+
+<div id="mapcontainer"></div>
+
+<p>
+
+<a href="http://www.facebook.com/sharer.php?u=http://fiatleak.com/&t=fiatleak"><img src="img/f.png" /></a>
+
+<a href="http://twitter.com/home?status=http://fiatleak.com/"><img src="img/t.png" /></a>
+
+<a href="https://m.google.com/app/plus/x/?v=compose&content=http://fiatleak.com/"><img src="img/g.png" /></a>
+
+</p>
+
+<p id="footer">donate to author/host - 1DUtwZkDZTy4ZDNzE7mDZ4r9QRZc2D8kCC - <a href="https://github.com/andrewhodel/fiatleak">https://github.com/andrewhodel/fiatleak</a></p>
+
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
+<script src="js/worldMap.js"></script>
+<script src="js/mtgoxwebsocket.js"></script>
+<script src="js/reconnecting-websocket.min.js"></script>
+<script src="http://socketio.mtgox.com/socket.io/socket.io.js"></script>
+<script src="http://fiatproxy1.jit.su:80/socket.io/socket.io.js"></script>
+<script src="js/main.js"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40473878-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

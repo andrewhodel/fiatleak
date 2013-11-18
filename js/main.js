@@ -18,12 +18,13 @@ var cMap = {
     'THB': [736, 183],
     'NOK': [490, 61],
     'ILS': [562, 142],
+    'BRL': [320, 248],
 }
 
 var stage = new Kinetic.Stage({
     container: 'mapcontainer',
     width: 1015,
-    height: 530,
+    height: 540,
 });
 
 var mapLayer = new Kinetic.Layer({});
@@ -57,24 +58,24 @@ var bValueBoxes = {};
 var bValues = {};
 var rateValueBoxes = {};
 var xPositions = {};
+var yPositions = {};
 var tbValue = 0;
 
 var i = 0;
 for (var key in cMap) {
 
     var stageWidth = stage.attrs.width;
-    var ybase = 400;
+    yPositions[key] = 400;
+    xPositions[key] = i * (stageWidth / 14);
 
-    if (i > 15) {
-        ybase = 470;
-        xPositions[key] = (i - 16) * (stageWidth / Object.keys(cMap).length);
-    } else {
-        xPositions[key] = i * (stageWidth / Object.keys(cMap).length);
+    if (i > 14) {
+        yPositions[key] = 470;
+        xPositions[key] = (i - 15) * (stageWidth / 14);
     }
 
     cLabels[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase,
+        y: yPositions[key],
         text: key,
         fontStyle: 'bold',
         fontSize: 24,
@@ -83,7 +84,7 @@ for (var key in cMap) {
 
     cValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase + 40,
+        y: yPositions[key] + 40,
         text: '',
         fontSize: 12,
         fill: 'red'
@@ -93,7 +94,7 @@ for (var key in cMap) {
 
     bValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase + 25,
+        y: yPositions[key] + 25,
         text: '+0',
         fontSize: 12,
         fill: 'green'
@@ -103,7 +104,7 @@ for (var key in cMap) {
 
     rateValueBoxes[key] = new Kinetic.Text({
         x: xPositions[key],
-        y: ybase + 55,
+        y: yPositions[key] + 55,
         text: '',
         fontSize: 12,
         fill: 'purple'
@@ -131,6 +132,7 @@ function aBuy(bitcoins, price, currencyName) {
 	//console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
 
     if (typeof cMap[currencyName] === 'undefined') {
+	console.log('currency not yet added to fiatleak - '+currencyName);
         return;
     }
 
@@ -140,13 +142,6 @@ function aBuy(bitcoins, price, currencyName) {
 
     var layer = new Kinetic.Layer();
 
-    var circle = new Kinetic.Circle({
-        radius: 10,
-        fill: '#f7931a',
-        stroke: '#ffffff',
-        strokeWidth: 2
-    });
-
     var image = new Kinetic.Image({
         image: img,
         width: 30,
@@ -154,7 +149,6 @@ function aBuy(bitcoins, price, currencyName) {
         y: 380,
         height: 30,
     });
-
 
     layer.add(image);
     stage.add(layer);

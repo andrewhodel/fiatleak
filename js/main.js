@@ -127,6 +127,8 @@ stage.add(graphLayer);
 var img = new Image();
 img.src = "img/btc_logo_30.png";
 
+var lastHighCoinPriceStepDown = 0;
+
 function aBuy(bitcoins, price, currencyName) {
 
 	//console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
@@ -142,21 +144,52 @@ function aBuy(bitcoins, price, currencyName) {
 
     var layer = new Kinetic.Layer();
 
+    var s = 40;
+
+    if (Number(bitcoins) < 1) {
+	s = s*Number(bitcoins);
+    }
+
+    if (s<10) {
+	s = 20;
+    }
+
     var image = new Kinetic.Image({
         image: img,
-        width: 30,
-        x: xPositions[currencyName] + 10,
-        y: 380,
-        height: 30,
+        //x: xPositions[currencyName] + 10,
+        //y: 380,
+        width: s,
+        height: s,
     });
 
-    layer.add(image);
+    var group = new Kinetic.Group({
+        x: xPositions[currencyName] + 10,
+        y: 380,
+    });
+    group.add(image);
+
+    if (Number(bitcoins) >= 1) {
+        var ct = new Kinetic.Text({
+            text: '+' + Math.round(Number(bitcoins)) + ' BTC',
+            fontSize: 10,
+	    x: 40,
+	    y: 20-(lastHighCoinPriceStepDown*10),
+            fill: 'green'
+        });
+	group.add(ct);
+	if (lastHighCoinPriceStepDown>3) {
+		lastHighCoinPriceStepDown = 0;
+	} else {
+		lastHighCoinPriceStepDown++;
+	}
+    }
+
+    layer.add(group);
     stage.add(layer);
 
     var tween = new Kinetic.Tween({
-        node: image,
+        node: group,
         duration: 6,
-        rotation: Math.PI * 2,
         x: cMap[currencyName][0],
         y: cMap[currencyName][1],
         easing: Kinetic.Easings.EaseOut,
@@ -235,7 +268,7 @@ function tickGraph() {
 
         for (var i = 0; i < graphLayer.getChildren().length; i++) {
 
-            var x = graphLayer.getChildren()[i].getX() - 4;
+            var x = graphLayer.getChildren()[i].getX() - 8;
             var y = graphLayer.getChildren()[i].getY();
 
             if (x < 0) {

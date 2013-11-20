@@ -1,5 +1,3 @@
-TradeSocket.init();
-
 var cMap = {
     'USD': [196, 112],
     'EUR': [493, 89],
@@ -30,6 +28,14 @@ var stage = new Kinetic.Stage({
 var mapLayer = new Kinetic.Layer({});
 var paisLayer = new Kinetic.Layer({});
 var graphLayer = new Kinetic.Layer({});
+
+var bLine = new Kinetic.Line({
+    points: [0,400,1014,400],
+    stroke: '#FFFFBC',
+    strokeWidth: 2,
+});
+
+paisLayer.add(bLine);
 
 var totalB = new Kinetic.Text({
     x: 350,
@@ -65,13 +71,15 @@ var i = 0;
 for (var key in cMap) {
 
     var stageWidth = stage.attrs.width;
-    yPositions[key] = 400;
+    yPositions[key] = 410;
     xPositions[key] = i * (stageWidth / 14);
 
     if (i > 14) {
-        yPositions[key] = 470;
+        yPositions[key] = 480;
         xPositions[key] = (i - 15) * (stageWidth / 14);
     }
+
+    xPositions[key] += 6;
 
     cLabels[key] = new Kinetic.Text({
         x: xPositions[key],
@@ -289,9 +297,9 @@ function tickGraph() {
         calc = largest;
     }
     var cx = 1000;
-    var cy = 389 - ((100 / largest) * calc);
+    var cy = 400 - ((100 / largest) * calc);
 
-    if (cy < 379) {
+    if (cy < 390) {
         console.log('add a high point number >10%');
 
         var pn = Math.round(nowBtcTotal * 100) / 100;
@@ -321,14 +329,24 @@ function tickGraph() {
     graphLayer.add(circle);
     graphLayer.draw();
 
+    drawDayNightMap(graphLayer.getCanvas()._canvas);
+
     //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
     nowBtcTotal = 0;
 
 }
 
-window.setInterval("tickGraph()", 1000);
+$(document).ready(function() {
 
-var socket = io.connect('http://fiatproxy1.jit.su:80');
-socket.on('proxyBuy', function (data) {
-    aBuy(data[0], data[1], data[2]);
+	initSunlight();
+
+	var socket = io.connect('http://fiatproxy1.jit.su:80');
+	socket.on('proxyBuy', function (data) {
+	    aBuy(data[0], data[1], data[2]);
+	});
+
+	TradeSocket.init();
+
+	window.setInterval("tickGraph()", 1000);
+
 });

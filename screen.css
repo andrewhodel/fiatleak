@@ -25,6 +25,7 @@ a:link, a:active, a:visited {
 }
 
 #mapcontainer {
+	border: 1px solid #333;
 }
 
 #footer {

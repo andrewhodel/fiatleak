@@ -1,7 +1,7 @@
 var cMap = {
     'USD': [196, 112],
     'EUR': [493, 89],
-    'JPY': [841, 132],
+    'JPY': [832, 126],
     'CAD': [257, 82],
     'GBP': [464, 86],
     'CHF': [488, 102],
@@ -22,11 +22,12 @@ var cMap = {
 var stage = new Kinetic.Stage({
     container: 'mapcontainer',
     width: 1015,
-    height: 540,
+    height: 550,
 });
 
 var mapLayer = new Kinetic.Layer({});
 var paisLayer = new Kinetic.Layer({});
+var tdLayer = new Kinetic.Layer({});
 var graphLayer = new Kinetic.Layer({});
 
 var bLine = new Kinetic.Line({
@@ -35,15 +36,116 @@ var bLine = new Kinetic.Line({
     strokeWidth: 2,
 });
 
-paisLayer.add(bLine);
+tdLayer.add(bLine);
+
+var totalTime = new Kinetic.Text({
+    x: 20,
+    y: 15,
+    text: '~0 seconds',
+    fontSize: 18,
+    fill: 'black'
+});
+tdLayer.add(totalTime);
 
 var totalB = new Kinetic.Text({
-    x: 350,
-    y: 330,
-    text: '+0.00 BTC',
+    x: 20,
+    y: 30,
+    text: '+0 BTC',
     fontSize: 60,
+    fontStyle: 'bold',
     fill: 'green'
 });
+tdLayer.add(totalB);
+
+var lhourl = new Kinetic.Text({
+    x: 20,
+    y: 90,
+    text: '1hr',
+    fontSize: 18,
+    fill: 'black'
+});
+paisLayer.add(lhourl);
+
+var lhour = new Kinetic.Text({
+    x: 60,
+    y: 90,
+    text: '+0',
+    fontSize: 18,
+    fill: 'green'
+});
+tdLayer.add(lhour);
+
+var lthirtyl = new Kinetic.Text({
+    x: 20,
+    y: 110,
+    text: '30m',
+    fontSize: 18,
+    fill: 'black'
+});
+paisLayer.add(lthirtyl);
+
+var lthirty = new Kinetic.Text({
+    x: 60,
+    y: 110,
+    text: '+0',
+    fontSize: 18,
+    fill: 'green'
+});
+tdLayer.add(lthirty);
+
+var ltenl = new Kinetic.Text({
+    x: 20,
+    y: 130,
+    text: '10m',
+    fontSize: 18,
+    fill: 'black'
+});
+paisLayer.add(ltenl);
+
+var lten = new Kinetic.Text({
+    x: 60,
+    y: 130,
+    text: '+0',
+    fontSize: 18,
+    fill: 'green'
+});
+tdLayer.add(lten);
+
+var lfivel = new Kinetic.Text({
+    x: 20,
+    y: 150,
+    text: '5m',
+    fontSize: 18,
+    fill: 'black'
+});
+paisLayer.add(lfivel);
+
+var lfive = new Kinetic.Text({
+    x: 60,
+    y: 150,
+    text: '+0',
+    fontSize: 18,
+    fill: 'green'
+});
+tdLayer.add(lfive);
+
+var lonel = new Kinetic.Text({
+    x: 20,
+    y: 170,
+    text: '1m',
+    fontSize: 18,
+    fill: 'black'
+});
+paisLayer.add(lonel);
+
+var lone = new Kinetic.Text({
+    x: 60,
+    y: 170,
+    text: '+0',
+    fontSize: 18,
+    fill: 'green'
+});
+tdLayer.add(lone);
 
 for (var key in worldMap.shapes) {
 
@@ -119,10 +221,9 @@ for (var key in cMap) {
     });
 
     paisLayer.add(cLabels[key]);
-    paisLayer.add(totalB);
-    paisLayer.add(cValueBoxes[key]);
-    paisLayer.add(bValueBoxes[key]);
-    paisLayer.add(rateValueBoxes[key]);
+    tdLayer.add(cValueBoxes[key]);
+    tdLayer.add(bValueBoxes[key]);
+    tdLayer.add(rateValueBoxes[key]);
 
     i++;
 
@@ -130,6 +231,7 @@ for (var key in cMap) {
 
 stage.add(mapLayer);
 stage.add(paisLayer);
+stage.add(tdLayer);
 stage.add(graphLayer);
 
 var img = new Image();
@@ -215,12 +317,12 @@ function aBuy(bitcoins, price, currencyName) {
             rateValueBoxes[currencyName].setText('@' + Math.round(Number(price)*100)/100);
 
             var tbVal = Number(bitcoins) + tbValue;
-            totalB.setText('+' + Math.round(tbVal*100)/100 + ' BTC');
+            totalB.setText('+' + Math.round(tbVal*10)/10 + ' BTC');
             tbValue = tbVal;
 
             nowBtcTotal += Number(bitcoins);
 
-            paisLayer.draw();
+            tdLayer.draw();
 
         }
     });
@@ -262,6 +364,11 @@ $('canvas').click(function (event) {
 
 var nowBtcTotal = 0;
 var largest = 2;
+var openD = new Date();
+var secondsInF = [];
+var eachFive = [];
+var lastFive = new Date();
+var spliceEvery = false;
 
 function tickGraph() {
 
@@ -332,8 +439,129 @@ function tickGraph() {
     drawDayNightMap(graphLayer.getCanvas()._canvas);
 
     //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
+
+    // update time
+    totalTime.setText('~'+timeDifference(new Date(),openD));
+
+    //lfive
+    var totalLastFive = 0;
+    var lastMinuteTotal = 0;
+
+    for (var i=0;i<secondsInF.length;i++) {
+	totalLastFive += secondsInF[i];
+
+	if (i>secondsInF.length-60) {
+		lastMinuteTotal += secondsInF[i];
+	}
+
+    }
+
+    var now = new Date();
+    //console.log('ms since lastFive '+(now.getTime()-lastFive.getTime()));
+    //console.log('secondsInF.length='+secondsInF.length);
+
+    if (spliceEvery == true) {
+	secondsInF.splice(0,1);
+    }
+
+    if (now.getTime()-lastFive.getTime()>300000) {
+	console.log('pushing seconds to five');
+	totalLastFive = 0;
+	for (var i=0;i<secondsInF.length;i++) {
+		totalLastFive += secondsInF[i];
+	}
+	eachFive.push(totalLastFive);
+	lastFive = new Date();
+	spliceEvery = true;
+    }
+
+    secondsInF.push(nowBtcTotal);
+
+    //eachFive
+    if (eachFive.length>11) {
+	// we have reached an hour
+	eachFive.splice(0,1);
+    }
+
+    // 1m
+    if (secondsInF.length<60) {
+	lone.setText('+'+Math.round(tbValue*10)/10);
+    } else {
+	lone.setText('+'+Math.round(lastMinuteTotal*10)/10);
+    }
+
+    // 5m
+    if (eachFive.length>0) {
+	lfive.setText('+'+Math.round(totalLastFive*10)/10);
+    } else {
+	lfive.setText('+'+Math.round(tbValue*10)/10);
+    }
+
+    // 10m
+    if (eachFive.length>1) {
+	lten.setText('+'+Math.round((eachFive[0]+eachFive[1]+totalLastFive)*10)/10);
+    } else {
+	lten.setText('+'+Math.round(tbValue*10)/10);
+    }
+
+    // 30m
+    if (eachFive.length>5) {
+	var t = 0;
+	for (var c=0;c<6;c++) {
+		t += eachFive[c];
+	}
+	lthirty.setText('+'+Math.round((t+totalLastFive)*10)/10);
+    } else {
+	lthirty.setText('+'+Math.round(tbValue*10)/10);
+    }
+
+    // 1hr
+    if (eachFive.length>11) {
+	var t = 0;
+	for (var c=0;c<12;c++) {
+		t += eachFive[c];
+	}
+	lhour.setText('+'+Math.round((t+totalLastFive)*10)/10);
+    } else {
+	lhour.setText('+'+Math.round(tbValue*10)/10);
+    }
+
+
+    //draw
+    tdLayer.draw();
+
+    // resets
     nowBtcTotal = 0;
 
+}
+
+function timeDifference(current, previous) {
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+         return Math.round(elapsed/1000) + ' seconds';   
+    } else if (elapsed < msPerHour) {
+	var tt = Math.round(elapsed/msPerMinute);
+	if (tt == 1) {
+         return tt + ' minute';   
+	} else {
+         return tt + ' minutes';   
+	}
+    } else if (elapsed < msPerDay ) {
+         return Math.round(elapsed/msPerHour ) + ' hours';   
+    } else if (elapsed < msPerMonth) {
+         return 'approximately ' + Math.round(elapsed/msPerDay) + ' days (warrior status)';
+    } else if (elapsed < msPerYear) {
+         return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months (insane)';
+    } else {
+         return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years (dead?)';
+    }
 }
 
 $(document).ready(function() {

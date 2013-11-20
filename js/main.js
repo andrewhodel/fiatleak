@@ -499,7 +499,7 @@ function tickGraph() {
 
     // 10m
     if (eachFive.length>1) {
-	lten.setText('+'+Math.round((eachFive[0]+eachFive[1]+totalLastFive)*10)/10);
+	lten.setText('+'+Math.round((eachFive[1]+totalLastFive)*10)/10);
     } else {
 	lten.setText('+'+Math.round(tbValue*10)/10);
     }
@@ -507,7 +507,7 @@ function tickGraph() {
     // 30m
     if (eachFive.length>5) {
 	var t = 0;
-	for (var c=0;c<6;c++) {
+	for (var c=1;c<6;c++) {
 		t += eachFive[c];
 	}
 	lthirty.setText('+'+Math.round((t+totalLastFive)*10)/10);
@@ -518,7 +518,7 @@ function tickGraph() {
     // 1hr
     if (eachFive.length>11) {
 	var t = 0;
-	for (var c=0;c<12;c++) {
+	for (var c=1;c<12;c++) {
 		t += eachFive[c];
 	}
 	lhour.setText('+'+Math.round((t+totalLastFive)*10)/10);

@@ -41,7 +41,7 @@ tdLayer.add(bLine);
 var totalTime = new Kinetic.Text({
     x: 20,
     y: 15,
-    text: '~0 seconds',
+    text: '00:00:00.0',
     fontSize: 18,
     fill: 'black'
 });
@@ -441,7 +441,7 @@ function tickGraph() {
     //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
 
     // update time
-    totalTime.setText('~'+timeDifference(new Date(),openD));
+    totalTime.setText(timeDifference(new Date(),openD));
 
     //lfive
     var totalLastFive = 0;
@@ -536,32 +536,17 @@ function tickGraph() {
 }
 
 function timeDifference(current, previous) {
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
+    var duration = current.getTime()-previous.getTime();
+    var milliseconds = parseInt((duration%1000)/100)
+        , seconds = parseInt((duration/1000)%60)
+        , minutes = parseInt((duration/(1000*60))%60)
+        , hours = parseInt((duration/(1000*60*60))%24);
 
-    var elapsed = current - previous;
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-    if (elapsed < msPerMinute) {
-         return Math.round(elapsed/1000) + ' seconds';   
-    } else if (elapsed < msPerHour) {
-	var tt = Math.round(elapsed/msPerMinute);
-	if (tt == 1) {
-         return tt + ' minute';   
-	} else {
-         return tt + ' minutes';   
-	}
-    } else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' hours';   
-    } else if (elapsed < msPerMonth) {
-         return 'approximately ' + Math.round(elapsed/msPerDay) + ' days (warrior status)';
-    } else if (elapsed < msPerYear) {
-         return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months (insane)';
-    } else {
-         return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years (dead?)';
-    }
+    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
 $(document).ready(function() {

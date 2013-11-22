@@ -432,7 +432,7 @@ function tickGraph() {
     var cx = 1000;
     var cy = 400 - ((100 / largest) * calc);
 
-    if (nowBtcTotal > Number($("#sndUserLimit").val())) {
+    if (nowBtcTotal > Number($("#sndUserLimit").val()) && $('#playSound').is(":checked")) {
 	snd.play();
     }
 

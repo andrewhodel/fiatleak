@@ -31,7 +31,7 @@ var tdLayer = new Kinetic.Layer({});
 var graphLayer = new Kinetic.Layer({});
 
 var bLine = new Kinetic.Line({
-    points: [0,400,1014,400],
+    points: [0, 400, 1014, 400],
     stroke: '#FFFFBC',
     strokeWidth: 2,
 });
@@ -241,10 +241,10 @@ var lastHighCoinPriceStepDown = 0;
 
 function aBuy(bitcoins, price, currencyName) {
 
-	//console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
+    //console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
 
     if (typeof cMap[currencyName] === 'undefined') {
-	console.log('currency not yet added to fiatleak - '+currencyName);
+        console.log('currency not yet added to fiatleak - ' + currencyName);
         return;
     }
 
@@ -252,82 +252,106 @@ function aBuy(bitcoins, price, currencyName) {
         $('#collecting').hide();
     }
 
-    var layer = new Kinetic.Layer();
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 
-    var s = 40;
+        var cVal = Number(bitcoins * price) + cValues[currencyName];
+        cValueBoxes[currencyName].setText(Math.round(cVal));
+        cValues[currencyName] = cVal;
 
-    if (Number(bitcoins) < 1) {
-	s = s*Number(bitcoins);
-    }
+        var bVal = Number(bitcoins) + bValues[currencyName];
+        bValueBoxes[currencyName].setText('+' + Math.round(bVal));
+        bValues[currencyName] = bVal;
 
-    if (s<10) {
-	s = 20;
-    }
+        rateValueBoxes[currencyName].setText('@' + Math.round(Number(price) * 100) / 100);
 
-    var image = new Kinetic.Image({
-        image: img,
-        //x: xPositions[currencyName] + 10,
-        //y: 380,
-        width: s,
-        height: s,
-    });
+        var tbVal = Number(bitcoins) + tbValue;
+        totalB.setText('+' + Math.round(tbVal * 10) / 10 + ' BTC');
+        tbValue = tbVal;
 
-    var group = new Kinetic.Group({
-        x: xPositions[currencyName] + 10,
-        y: 380,
-    });
-    group.add(image);
+        nowBtcTotal += Number(bitcoins);
 
-    if (Number(bitcoins) >= 1) {
-        var ct = new Kinetic.Text({
-            text: '+' + Math.round(Number(bitcoins)) + ' BTC',
-            fontSize: 10,
-	    x: 40,
-	    y: 20-(lastHighCoinPriceStepDown*10),
-            fill: 'green'
-        });
-	group.add(ct);
-	if (lastHighCoinPriceStepDown>3) {
-		lastHighCoinPriceStepDown = 0;
-	} else {
-		lastHighCoinPriceStepDown++;
-	}
-    }
+        tdLayer.draw();
 
-    layer.add(group);
-    stage.add(layer);
+    } else {
 
-    var tween = new Kinetic.Tween({
-        node: group,
-        duration: 6,
-        x: cMap[currencyName][0],
-        y: cMap[currencyName][1],
-        easing: Kinetic.Easings.EaseOut,
-        onFinish: function () {
-            layer.destroy();
+        var layer = new Kinetic.Layer();
 
-            var cVal = Number(bitcoins*price)+cValues[currencyName];
-            cValueBoxes[currencyName].setText(Math.round(cVal));
-            cValues[currencyName] = cVal;
+        var s = 40;
 
-            var bVal = Number(bitcoins)+bValues[currencyName];
-            bValueBoxes[currencyName].setText('+' + Math.round(bVal));
-            bValues[currencyName] = bVal;
-
-            rateValueBoxes[currencyName].setText('@' + Math.round(Number(price)*100)/100);
-
-            var tbVal = Number(bitcoins) + tbValue;
-            totalB.setText('+' + Math.round(tbVal*10)/10 + ' BTC');
-            tbValue = tbVal;
-
-            nowBtcTotal += Number(bitcoins);
-
-            tdLayer.draw();
-
+        if (Number(bitcoins) < 1) {
+            s = s * Number(bitcoins);
         }
-    });
 
-    tween.play();
+        if (s < 10) {
+            s = 20;
+        }
+
+        var image = new Kinetic.Image({
+            image: img,
+            //x: xPositions[currencyName] + 10,
+            //y: 380,
+            width: s,
+            height: s,
+        });
+
+        var group = new Kinetic.Group({
+            x: xPositions[currencyName] + 10,
+            y: 380,
+        });
+        group.add(image);
+
+        if (Number(bitcoins) >= 1) {
+            var ct = new Kinetic.Text({
+                text: '+' + Math.round(Number(bitcoins)) + ' BTC',
+                fontSize: 10,
+                x: 40,
+                y: 20 - (lastHighCoinPriceStepDown * 10),
+                fill: 'green'
+            });
+            group.add(ct);
+            if (lastHighCoinPriceStepDown > 3) {
+                lastHighCoinPriceStepDown = 0;
+            } else {
+                lastHighCoinPriceStepDown++;
+            }
+        }
+
+        layer.add(group);
+        stage.add(layer);
+
+        var tween = new Kinetic.Tween({
+            node: group,
+            duration: 6,
+            x: cMap[currencyName][0],
+            y: cMap[currencyName][1],
+            easing: Kinetic.Easings.EaseOut,
+            onFinish: function () {
+                layer.destroy();
+
+                var cVal = Number(bitcoins * price) + cValues[currencyName];
+                cValueBoxes[currencyName].setText(Math.round(cVal));
+                cValues[currencyName] = cVal;
+
+                var bVal = Number(bitcoins) + bValues[currencyName];
+                bValueBoxes[currencyName].setText('+' + Math.round(bVal));
+                bValues[currencyName] = bVal;
+
+                rateValueBoxes[currencyName].setText('@' + Math.round(Number(price) * 100) / 100);
+
+                var tbVal = Number(bitcoins) + tbValue;
+                totalB.setText('+' + Math.round(tbVal * 10) / 10 + ' BTC');
+                tbValue = tbVal;
+
+                nowBtcTotal += Number(bitcoins);
+
+                tdLayer.draw();
+
+            }
+        });
+
+        tween.play();
+
+    }
 
 }
 
@@ -441,18 +465,18 @@ function tickGraph() {
     //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
 
     // update time
-    totalTime.setText(timeDifference(new Date(),openD));
+    totalTime.setText(timeDifference(new Date(), openD));
 
     //lfive
     var totalLastFive = 0;
     var lastMinuteTotal = 0;
 
-    for (var i=0;i<secondsInF.length;i++) {
-	totalLastFive += secondsInF[i];
+    for (var i = 0; i < secondsInF.length; i++) {
+        totalLastFive += secondsInF[i];
 
-	if (i>secondsInF.length-60) {
-		lastMinuteTotal += secondsInF[i];
-	}
+        if (i > secondsInF.length - 60) {
+            lastMinuteTotal += secondsInF[i];
+        }
 
     }
 
@@ -461,69 +485,69 @@ function tickGraph() {
     //console.log('secondsInF.length='+secondsInF.length);
 
     if (spliceEvery == true) {
-	secondsInF.splice(0,1);
+        secondsInF.splice(0, 1);
     }
 
-    if (now.getTime()-lastFive.getTime()>300000) {
-	console.log('pushing seconds to five');
-	totalLastFive = 0;
-	for (var i=0;i<secondsInF.length;i++) {
-		totalLastFive += secondsInF[i];
-	}
-	eachFive.push(totalLastFive);
-	lastFive = new Date();
-	spliceEvery = true;
+    if (now.getTime() - lastFive.getTime() > 300000) {
+        console.log('pushing seconds to five');
+        totalLastFive = 0;
+        for (var i = 0; i < secondsInF.length; i++) {
+            totalLastFive += secondsInF[i];
+        }
+        eachFive.push(totalLastFive);
+        lastFive = new Date();
+        spliceEvery = true;
     }
 
     secondsInF.push(nowBtcTotal);
 
     //eachFive
-    if (eachFive.length>11) {
-	// we have reached an hour
-	eachFive.splice(0,1);
+    if (eachFive.length > 11) {
+        // we have reached an hour
+        eachFive.splice(0, 1);
     }
 
     // 1m
-    if (secondsInF.length<60) {
-	lone.setText('+'+Math.round(tbValue*10)/10);
+    if (secondsInF.length < 60) {
+        lone.setText('+' + Math.round(tbValue * 10) / 10);
     } else {
-	lone.setText('+'+Math.round(lastMinuteTotal*10)/10);
+        lone.setText('+' + Math.round(lastMinuteTotal * 10) / 10);
     }
 
     // 5m
-    if (eachFive.length>0) {
-	lfive.setText('+'+Math.round(totalLastFive*10)/10);
+    if (eachFive.length > 0) {
+        lfive.setText('+' + Math.round(totalLastFive * 10) / 10);
     } else {
-	lfive.setText('+'+Math.round(tbValue*10)/10);
+        lfive.setText('+' + Math.round(tbValue * 10) / 10);
     }
 
     // 10m
-    if (eachFive.length>1) {
-	lten.setText('+'+Math.round((eachFive[0]+totalLastFive)*10)/10);
+    if (eachFive.length > 1) {
+        lten.setText('+' + Math.round((eachFive[0] + totalLastFive) * 10) / 10);
     } else {
-	lten.setText('+'+Math.round(tbValue*10)/10);
+        lten.setText('+' + Math.round(tbValue * 10) / 10);
     }
 
     // 30m
-    if (eachFive.length>5) {
-	var t = 0;
-	for (var c=0;c<5;c++) {
-		t += eachFive[c];
-	}
-	lthirty.setText('+'+Math.round((t+totalLastFive)*10)/10);
+    if (eachFive.length > 5) {
+        var t = 0;
+        for (var c = 0; c < 5; c++) {
+            t += eachFive[c];
+        }
+        lthirty.setText('+' + Math.round((t + totalLastFive) * 10) / 10);
     } else {
-	lthirty.setText('+'+Math.round(tbValue*10)/10);
+        lthirty.setText('+' + Math.round(tbValue * 10) / 10);
     }
 
     // 1hr
-    if (eachFive.length>11) {
-	var t = 0;
-	for (var c=0;c<11;c++) {
-		t += eachFive[c];
-	}
-	lhour.setText('+'+Math.round((t+totalLastFive)*10)/10);
+    if (eachFive.length > 11) {
+        var t = 0;
+        for (var c = 0; c < 11; c++) {
+            t += eachFive[c];
+        }
+        lhour.setText('+' + Math.round((t + totalLastFive) * 10) / 10);
     } else {
-	lhour.setText('+'+Math.round(tbValue*10)/10);
+        lhour.setText('+' + Math.round(tbValue * 10) / 10);
     }
 
 
@@ -536,11 +560,11 @@ function tickGraph() {
 }
 
 function timeDifference(current, previous) {
-    var duration = current.getTime()-previous.getTime();
-    var milliseconds = parseInt((duration%1000)/100)
-        , seconds = parseInt((duration/1000)%60)
-        , minutes = parseInt((duration/(1000*60))%60)
-        , hours = parseInt((duration/(1000*60*60))%24);
+    var duration = current.getTime() - previous.getTime();
+    var milliseconds = parseInt((duration % 1000) / 100),
+        seconds = parseInt((duration / 1000) % 60),
+        minutes = parseInt((duration / (1000 * 60)) % 60),
+        hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
@@ -549,17 +573,18 @@ function timeDifference(current, previous) {
     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-	initSunlight();
+    initSunlight();
 
-	var socket = io.connect('http://fiatproxy1.jit.su:80');
-	socket.on('proxyBuy', function (data) {
-	    aBuy(data[0], data[1], data[2]);
-	});
+    //var socket = io.connect('http://fiatproxy1.jit.su:80');
+    var socket = io.connect('http://69.94.230.87:8003');
+    socket.on('proxyBuy', function (data) {
+        aBuy(data[0], data[1], data[2]);
+    });
 
-	TradeSocket.init();
+    TradeSocket.init();
 
-	window.setInterval("tickGraph()", 1000);
+    window.setInterval("tickGraph()", 1000);
 
 });

@@ -432,6 +432,10 @@ function tickGraph() {
     var cx = 1000;
     var cy = 400 - ((100 / largest) * calc);
 
+    if (nowBtcTotal > Number($("#sndUserLimit").val())) {
+	snd.play();
+    }
+
     if (cy < 390) {
         console.log('add a high point number >10%');
 
@@ -577,6 +581,8 @@ function sunU() {
     sunLayer.draw();
     drawDayNightMap(sunLayer.getCanvas()._canvas);
 }
+
+var snd = new Audio("sounds/c6.mp3");
 
 $(document).ready(function () {
 

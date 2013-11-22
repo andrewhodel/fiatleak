@@ -501,17 +501,11 @@ function tickGraph() {
 
     secondsInF.push(nowBtcTotal);
 
-    //console.log('before splice');
-    //console.log(eachFive);
-
     //eachFive
-    if (eachFive.length > 11) {
+    if (eachFive.length > 12) {
         // we have reached an hour
         eachFive.splice(0, 1);
     }
-
-    //console.log('after splice');
-    //console.log(eachFive);
 
     // 1m
     if (secondsInF.length < 60) {

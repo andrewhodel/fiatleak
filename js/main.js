@@ -252,7 +252,7 @@ function aBuy(bitcoins, price, currencyName) {
         $('#collecting').hide();
     }
 
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || $('#hideAnimations').is(":checked")) {
 
         var cVal = Number(bitcoins * price) + cValues[currencyName];
         cValueBoxes[currencyName].setText(Math.round(cVal));

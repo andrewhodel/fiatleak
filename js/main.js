@@ -29,6 +29,7 @@ var mapLayer = new Kinetic.Layer({});
 var paisLayer = new Kinetic.Layer({});
 var tdLayer = new Kinetic.Layer({});
 var graphLayer = new Kinetic.Layer({});
+var sunLayer = new Kinetic.Layer({});
 
 var bLine = new Kinetic.Line({
     points: [0, 400, 1014, 400],
@@ -233,6 +234,7 @@ stage.add(mapLayer);
 stage.add(paisLayer);
 stage.add(tdLayer);
 stage.add(graphLayer);
+stage.add(sunLayer);
 
 var img = new Image();
 img.src = "img/btc_logo_30.png";
@@ -460,8 +462,6 @@ function tickGraph() {
     graphLayer.add(circle);
     graphLayer.draw();
 
-    drawDayNightMap(graphLayer.getCanvas()._canvas);
-
     //console.log('adding tickGraph '+nowBtcTotal+', '+cx+','+cy);
 
     // update time
@@ -501,11 +501,17 @@ function tickGraph() {
 
     secondsInF.push(nowBtcTotal);
 
+    //console.log('before splice');
+    //console.log(eachFive);
+
     //eachFive
     if (eachFive.length > 11) {
         // we have reached an hour
         eachFive.splice(0, 1);
     }
+
+    //console.log('after splice');
+    //console.log(eachFive);
 
     // 1m
     if (secondsInF.length < 60) {
@@ -573,7 +579,15 @@ function timeDifference(current, previous) {
     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
+function sunU() {
+    drawDayNightMap(sunLayer.getCanvas()._canvas);
+}
+
 $(document).ready(function () {
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	$('#aniQ').html('animations disabled on mobile!');
+    }
 
     initSunlight();
 
@@ -585,6 +599,11 @@ $(document).ready(function () {
 
     TradeSocket.init();
 
+    sunU();
+
+    // redraw daylight every 5 minutes
+    window.setInterval("sunU()", 60000*5);
+    // tick graph every second
     window.setInterval("tickGraph()", 1000);
 
 });

@@ -580,6 +580,7 @@ function timeDifference(current, previous) {
 }
 
 function sunU() {
+    sunLayer.removeChildren();
     drawDayNightMap(sunLayer.getCanvas()._canvas);
 }
 

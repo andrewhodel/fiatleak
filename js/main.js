@@ -587,7 +587,7 @@ var snd = new Audio("sounds/c6.mp3");
 $(document).ready(function () {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-	$('#aniQ').html('animations disabled on mobile!');
+	$('#hideAnimations').attr('checked','checked');
     }
 
     initSunlight();

@@ -237,11 +237,14 @@ stage.add(graphLayer);
 stage.add(sunLayer);
 
 var img = new Image();
-img.src = "img/btc_logo_30.png";
+img.src = "img/btc_logo_60.png";
 
 var lastHighCoinPriceStepDown = 0;
 
-function aBuy(bitcoins, price, currencyName) {
+function aBuy(bitcoins, price, currencyName, proxySpread) {
+    if (typeof proxySpread == 'undefined') {
+	proxySpread = 0;
+    }
 
     //console.log('aBuy of '+bitcoins+' for $'+price+' of '+currencyName);
 
@@ -278,14 +281,14 @@ function aBuy(bitcoins, price, currencyName) {
 
         var layer = new Kinetic.Layer();
 
-        var s = 40;
+        var s = 60;
 
-        if (Number(bitcoins) < 1) {
-            s = s * Number(bitcoins);
+        if (Number(bitcoins) <= 4) {
+            s = 15 + (Number(bitcoins)/4)*40;
         }
 
-        if (s < 10) {
-            s = 20;
+        if (s < 15) {
+            s = 15;
         }
 
         var image = new Kinetic.Image({
@@ -298,15 +301,15 @@ function aBuy(bitcoins, price, currencyName) {
 
         var group = new Kinetic.Group({
             x: xPositions[currencyName] + 10,
-            y: 380,
+            y: yPositions[currencyName] - s,
         });
         group.add(image);
 
-        if (Number(bitcoins) >= 1) {
+        if (Number(bitcoins) >= .25) {
             var ct = new Kinetic.Text({
-                text: '+' + Math.round(Number(bitcoins)) + ' BTC',
+                text: '+' + Math.round(Number(bitcoins)*100)/100 + ' BTC',
                 fontSize: 10,
-                x: 40,
+                x: 10+s,
                 y: 20 - (lastHighCoinPriceStepDown * 10),
                 fill: 'green'
             });
@@ -330,28 +333,30 @@ function aBuy(bitcoins, price, currencyName) {
             onFinish: function () {
                 layer.destroy();
 
-                var cVal = Number(bitcoins * price) + cValues[currencyName];
-                cValueBoxes[currencyName].setText(Math.round(cVal));
-                cValues[currencyName] = cVal;
-
-                var bVal = Number(bitcoins) + bValues[currencyName];
-                bValueBoxes[currencyName].setText('+' + Math.round(bVal));
-                bValues[currencyName] = bVal;
-
-                rateValueBoxes[currencyName].setText('@' + Math.round(Number(price) * 100) / 100);
-
-                var tbVal = Number(bitcoins) + tbValue;
-                totalB.setText('+' + Math.round(tbVal * 10) / 10 + ' BTC');
-                tbValue = tbVal;
-
-                nowBtcTotal += Number(bitcoins);
-
                 tdLayer.draw();
 
             }
         });
 
-        tween.play();
+        var cVal = Number(bitcoins * price) + cValues[currencyName];
+        cValueBoxes[currencyName].setText(Math.round(cVal));
+        cValues[currencyName] = cVal;
+
+        var bVal = Number(bitcoins) + bValues[currencyName];
+        bValueBoxes[currencyName].setText('+' + Math.round(bVal));
+        bValues[currencyName] = bVal;
+
+        rateValueBoxes[currencyName].setText('@' + Math.round(Number(price) * 100) / 100);
+
+        var tbVal = Number(bitcoins) + tbValue;
+        totalB.setText('+' + Math.round(tbVal * 10) / 10 + ' BTC');
+        tbValue = tbVal;
+
+        nowBtcTotal += Number(bitcoins);
+
+	setTimeout(function() {
+		tween.play();
+	}, (Math.floor(Math.random() * 1000) + 1)*proxySpread);
 
     }
 
@@ -595,7 +600,7 @@ $(document).ready(function () {
     //var socket = io.connect('http://fiatproxy1.jit.su:80');
     var socket = io.connect('http://69.94.230.87:8003');
     socket.on('proxyBuy', function (data) {
-        aBuy(data[0], data[1], data[2]);
+        aBuy(data[0], data[1], data[2], 1);
     });
 
     TradeSocket.init();

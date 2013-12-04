@@ -23,7 +23,7 @@ var cMap = {
 // in order
 // Waiting, Title, SimpleAbout, HideAni, PlaySndOne, PlaySndTwo, DataFrom
 var trans = {
-'de':['beobachte in Echtzeit, wie die Währungen der Welt in Bitcoins eingetauscht werden','','Jeder Handelsabschluß führt zum einem Bitcoin, der sich vom roten Währungszähler zum Land auf der Karte bewegt. Der Wert in BTC wird in Grün angezeigt und auf der Karte dargestellt. Der aktuelle Umrechnungskurs für jede Währung wird in Violett angegeben in bei jedem Handel aktualisiert.','Animationen verstecken?','Einen Ton abspielen, wenn','oder mehr BTC pro Sekunde verkauft werden?','Berücksichtigt werden','spende bitcoins um die Open Source Entwicklung zu unterstützen'],
+'de':['waiting for first trade...','beobachte in Echtzeit, wie die Währungen der Welt in Bitcoins eingetauscht werden','Jeder Handelsabschluß führt zum einem Bitcoin, der sich vom roten Währungszähler zum Land auf der Karte bewegt. Der Wert in BTC wird in Grün angezeigt und auf der Karte dargestellt. Der aktuelle Umrechnungskurs für jede Währung wird in Violett angegeben in bei jedem Handel aktualisiert.','Animationen verstecken?','Einen Ton abspielen, wenn','oder mehr BTC pro Sekunde verkauft werden?','Berücksichtigt werden','Spende bitcoins um die Open Source Entwicklung zu unterstützen'],
 //'es':[]
 }
 
@@ -597,13 +597,8 @@ function sunU() {
 
 var snd = new Audio("sounds/c6.mp3");
 
-$(document).ready(function () {
+function setLang(l) {
 
-    var language = window.navigator.userLanguage || window.navigator.language;
-    var l = language.substr(0,2);
-
-    if (trans[l]) {
-	//alert(l);
 	$('#langWaiting').html(trans[l][0]);
 	$('#langTitle').html(trans[l][1]);
 	$('#langSimpleAbout').html(trans[l][2]);
@@ -612,6 +607,17 @@ $(document).ready(function () {
 	$('#langPlaySndTwo').html(trans[l][5]);
 	$('#langDataFrom').html(trans[l][6]);
 	$('#langDonate').html(trans[l][7]);
+
+}
+
+$(document).ready(function () {
+
+    var language = window.navigator.userLanguage || window.navigator.language;
+    var l = language.substr(0,2);
+
+    if (trans[l]) {
+	//alert(l);
+	setLang(l);
     }
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {

@@ -19,6 +19,14 @@ var cMap = {
     'BRL': [320, 248],
 }
 
+// ISO 639
+// in order
+// Waiting, Title, SimpleAbout, HideAni, PlaySndOne, PlaySndTwo, DataFrom
+var trans = {
+'de':['beobachte in Echtzeit, wie die Währungen der Welt in Bitcoins eingetauscht werden','','Jeder Handelsabschluß führt zum einem Bitcoin, der sich vom roten Währungszähler zum Land auf der Karte bewegt. Der Wert in BTC wird in Grün angezeigt und auf der Karte dargestellt. Der aktuelle Umrechnungskurs für jede Währung wird in Violett angegeben in bei jedem Handel aktualisiert.','Animationen verstecken?','Einen Ton abspielen, wenn','oder mehr BTC pro Sekunde verkauft werden?','Berücksichtigt werden','spende bitcoins um die Open Source Entwicklung zu unterstützen'],
+//'es':[]
+}
+
 var stage = new Kinetic.Stage({
     container: 'mapcontainer',
     width: 1015,
@@ -590,6 +598,21 @@ function sunU() {
 var snd = new Audio("sounds/c6.mp3");
 
 $(document).ready(function () {
+
+    var language = window.navigator.userLanguage || window.navigator.language;
+    var l = language.substr(0,2);
+
+    if (trans[l]) {
+	//alert(l);
+	$('#langWaiting').html(trans[l][0]);
+	$('#langTitle').html(trans[l][1]);
+	$('#langSimpleAbout').html(trans[l][2]);
+	$('#langHideAni').html(trans[l][3]);
+	$('#langPlaySndOne').html(trans[l][4]);
+	$('#langPlaySndTwo').html(trans[l][5]);
+	$('#langDataFrom').html(trans[l][6]);
+	$('#langDonate').html(trans[l][7]);
+    }
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 	$('#hideAnimations').attr('checked','checked');

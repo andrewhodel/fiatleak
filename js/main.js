@@ -24,7 +24,7 @@ var cMap = {
 // Waiting, Title, SimpleAbout, HideAni, PlaySndOne, PlaySndTwo, DataFrom, Donate
 var trans = {
 'de':['waiting for first trade...','beobachte in Echtzeit, wie die Währungen der Welt in Bitcoins eingetauscht werden','Jeder Handelsabschluß führt zum einem Bitcoin, der sich vom roten Währungszähler zum Land auf der Karte bewegt. Der Wert in BTC wird in Grün angezeigt und auf der Karte dargestellt. Der aktuelle Umrechnungskurs für jede Währung wird in Violett angegeben in bei jedem Handel aktualisiert.','Animationen verstecken?','Einen Ton abspielen, wenn','oder mehr BTC pro Sekunde verkauft werden?','Berücksichtigt werden','Spende bitcoins um die Open Source Entwicklung zu unterstützen'],
-'es':['esperando por la primera transacción...','ver las monedas del mundo corriendo al BTC en tiempo real','Cada transacción hace un Bitcoin que esta enviado de la moneda FIAT en rojo al su pais.  El valor en BTC esta muestra en verde y trazada através del mapa.  El ultimo precio por cada moneda esta muestra en color morado y actualizado por cada transacción','¿Ocultar animaciones?','¿Reproducir sonido cuando la tasa esta','BTC cada segundo o mas?','Datos de','donar bitcoins para apoyar el desarrollo de código abierto']
+'es':['esperando por la primera transacción...','ver las monedas del mundo corriendo al BTC en tiempo real','Cada transacción hace un Bitcoin que esta enviado de la moneda FIAT en rojo a su pais.  El valor en BTC esta muestra en verde y trazada através del mapa.  El ultimo precio por cada moneda esta muestra en color morado y actualizado por cada transacción','¿Ocultar animaciones?','¿','BTC cada segundo o mas?','Datos de','donar bitcoins para apoyar el desarrollo de código abierto']
 }
 
 var stage = new Kinetic.Stage({
@@ -55,6 +55,16 @@ var totalTime = new Kinetic.Text({
     fill: 'black'
 });
 tdLayer.add(totalTime);
+
+var marca = new Kinetic.Text({
+    x: 630,
+    y: 30,
+    text: 'http://fiatleak.com',
+    fontSize: 40,
+    fontStyle: 'bold',
+    fill: '#f7931a'
+});
+tdLayer.add(marca);
 
 var totalB = new Kinetic.Text({
     x: 20,

@@ -58,7 +58,7 @@ tdLayer.add(totalTime);
 
 var ch = new Kinetic.Text({
     x: 482,
-    y: 80,
+    y: 70,
     text: '如果你可以把英文翻译，以中国，并希望帮助请联系andrewhodel@gmail.com',
     fontSize: 14,
     fill: 'green'
@@ -67,7 +67,7 @@ tdLayer.add(ch);
 
 var ru = new Kinetic.Text({
     x: 343,
-    y: 100,
+    y: 85,
     text: 'если вы можете помочь с английского на русский перевод пожалуйста, напишите адрес выше',
     fontSize: 14,
     fill: 'green'

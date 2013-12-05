@@ -23,8 +23,11 @@ var cMap = {
 // in order
 // Waiting, Title, SimpleAbout, HideAni, PlaySndOne, PlaySndTwo, DataFrom, Donate
 var trans = {
+'en':['waiting for first trade...','watch the world currencies flow into BTC in realtime','Each trade results in a bitcoin being sent from the currency counter in red to the country on the map. The value in BTC is listed in green and plotted across the map. The last exchange rate for each currency is listed in @purple and updated for each trade.','Hide animations?','Play sound when rate is','BTC per second or higher?','Data from','donate bitcoins to support open source development'],
 'de':['waiting for first trade...','beobachte in Echtzeit, wie die Währungen der Welt in Bitcoins eingetauscht werden','Jeder Handelsabschluß führt zum einem Bitcoin, der sich vom roten Währungszähler zum Land auf der Karte bewegt. Der Wert in BTC wird in Grün angezeigt und auf der Karte dargestellt. Der aktuelle Umrechnungskurs für jede Währung wird in Violett angegeben in bei jedem Handel aktualisiert.','Animationen verstecken?','Einen Ton abspielen, wenn','oder mehr BTC pro Sekunde verkauft werden?','Berücksichtigt werden','Spende bitcoins um die Open Source Entwicklung zu unterstützen'],
-'es':['esperando por la primera transacción...','ver las monedas del mundo corriendo al BTC en tiempo real','Cada transacción hace un Bitcoin que esta enviado de la moneda FIAT en rojo a su pais.  El valor en BTC esta muestra en verde y trazada através del mapa.  El ultimo precio por cada moneda esta muestra en color morado y actualizado por cada transacción','¿Ocultar animaciones?','¿','BTC cada segundo o mas?','Datos de','donar bitcoins para apoyar el desarrollo de código abierto']
+'es':['esperando por la primera transacción...','ver las monedas del mundo corriendo al BTC en tiempo real','Cada transacción hace un Bitcoin que esta enviado de la moneda FIAT en rojo a su pais.  El valor en BTC esta muestra en verde y trazada através del mapa.  El ultimo precio por cada moneda esta muestra en color morado y actualizado por cada transacción','¿Ocultar animaciones?','¿','BTC cada segundo o mas?','Datos de','donar bitcoins para apoyar el desarrollo de código abierto'],
+'zh':['请等待第一笔交易','实时观看世界货币流入比特币的动态',' 圆形图样德尔起始位置（红色）表示该笔交易购入比特币所使用的的币种，结束位置为买入方所在的国家。 发生此交易的比特币的值标记为(绿色), 最近一次的比特币汇率为（紫色）,每笔交易实施更新','隐藏动画？','当每秒比特币交易数目等于或者大于','个时，开启提示声','数据来源','捐赠比特币来支持开源项目'],
+'ru':['ожидание первой сделки ...','наблюдение за потоком мировых валют в  BTC в режиме реального времени','результат каждой сделки в BTC отправляется из валютного счётчика красного цвета в страну на карте. Объём в BTC отображается зелёным цветом и отрисовывается на карте. Цена последней сделки для каждой валюты отображается фиолетовым цветом и обновляется при каждой сделке.','Скрыть анимацию?','Воспроизводить звуки при скорости сделок','BTC в секунду или выше?','Данные из','Пожертвования в BTC для развития проектов с открытым кодом.']
 }
 
 var stage = new Kinetic.Stage({
@@ -57,22 +60,13 @@ var totalTime = new Kinetic.Text({
 tdLayer.add(totalTime);
 
 var ch = new Kinetic.Text({
-    x: 482,
+    x: 900,
     y: 70,
-    text: '如果你可以把英文翻译，以中国，并希望帮助请联系andrewhodel@gmail.com',
+    text: '请访问网站',
     fontSize: 14,
     fill: 'green'
 });
 tdLayer.add(ch);
-
-var ru = new Kinetic.Text({
-    x: 343,
-    y: 85,
-    text: 'если вы можете помочь с английского на русский перевод пожалуйста, напишите адрес выше',
-    fontSize: 14,
-    fill: 'green'
-});
-tdLayer.add(ru);
 
 var marca = new Kinetic.Text({
     x: 630,
@@ -636,12 +630,24 @@ function setLang(l) {
 	$('#langDataFrom').html(trans[l][6]);
 	$('#langDonate').html(trans[l][7]);
 
+	// change select
+	$('#selectLang option:contains("'+l+'")').prop('selected', true);
+
 }
+
+$('#selectLang').change(function () {
+	setLang($('#selectLang').val());
+});
 
 $(document).ready(function () {
 
     var language = window.navigator.userLanguage || window.navigator.language;
     var l = language.substr(0,2);
+
+    // init lang
+    for (var key in trans) {
+	$('#selectLang').append('<option>'+key+'</option>');
+    }
 
     if (trans[l]) {
 	//alert(l);

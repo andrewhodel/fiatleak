@@ -56,6 +56,15 @@ var totalTime = new Kinetic.Text({
 });
 tdLayer.add(totalTime);
 
+var ch = new Kinetic.Text({
+    x: 482,
+    y: 80,
+    text: '如果你可以把英文翻译，以中国，并希望帮助请联系andrewhodel@gmail.com',
+    fontSize: 14,
+    fill: 'green'
+});
+tdLayer.add(ch);
+
 var marca = new Kinetic.Text({
     x: 630,
     y: 30,

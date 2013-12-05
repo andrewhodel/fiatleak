@@ -65,6 +65,15 @@ var ch = new Kinetic.Text({
 });
 tdLayer.add(ch);
 
+var ru = new Kinetic.Text({
+    x: 343,
+    y: 100,
+    text: 'если вы можете помочь с английского на русский перевод пожалуйста, напишите адрес выше',
+    fontSize: 14,
+    fill: 'green'
+});
+tdLayer.add(ru);
+
 var marca = new Kinetic.Text({
     x: 630,
     y: 30,

@@ -19,12 +19,13 @@ a:link, a:active, a:visited {
 #container {
 	display: block;
 	overflow: hidden;
-	height: 530px;
+	height: 550px;
 	width: 1015px;
 	background-position: 1px 1px;
 }
 
 #mapcontainer {
+	border: 1px solid #333;
 }
 
 #footer {

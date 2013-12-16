@@ -31,6 +31,8 @@ TradeSocket.init = function() {
 
 	if ('WebSocket' in window) {
 		var connection = new ReconnectingWebSocket('ws://websocket.mtgox.com:80/mtgox');
+		connection.reconnectInterval = 5000;
+		connection.timeoutInterval = 50000;
 		this.connection = connection;
 
 		connection.onopen = function() {

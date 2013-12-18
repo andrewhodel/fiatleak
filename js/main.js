@@ -313,7 +313,11 @@ function aBuy(bitcoins, price, currencyName, proxySpread) {
 
     } else {
 
-        var layer = new Kinetic.Layer();
+		var layer;
+		var multipleLayers = $("#multipleLayers").is(":checked");
+		if(multipleLayers) {
+			layer = new Kinetic.Layer();
+		}
 
         var s = 60;
 
@@ -355,8 +359,12 @@ function aBuy(bitcoins, price, currencyName, proxySpread) {
             }
         }
 
-        layer.add(group);
-        stage.add(layer);
+		if(multipleLayers) {
+			layer.add(group);
+			stage.add(layer);
+		} else {
+			tdLayer.add(group);
+		}
 
         var tween = new Kinetic.Tween({
             node: group,
@@ -365,7 +373,11 @@ function aBuy(bitcoins, price, currencyName, proxySpread) {
             y: cMap[currencyName][1],
             easing: Kinetic.Easings.EaseOut,
             onFinish: function () {
-                layer.destroy();
+				if(multipleLayers) {
+					layer.destroy();
+				} else {
+					group.destroy();
+				}
 
                 tdLayer.draw();
 
@@ -678,5 +690,4 @@ $(document).ready(function () {
     window.setInterval("sunU()", 60000*5);
     // tick graph every second
     window.setInterval("tickGraph()", 1000);
-
 });
